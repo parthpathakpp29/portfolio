@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { motion } from "framer-motion"
 
 interface Particle {
@@ -18,6 +18,11 @@ interface MousePosition {
 
 export default function ParticleEffect({ mousePosition }: { mousePosition: MousePosition }) {
   const [particles, setParticles] = useState<Particle[]>([])
+  const mouseRef = useRef<MousePosition>(mousePosition)
+
+  useEffect(() => {
+    mouseRef.current = mousePosition
+  }, [mousePosition])
 
   useEffect(() => {
     // Initialize particles
@@ -36,6 +41,14 @@ export default function ParticleEffect({ mousePosition }: { mousePosition: Mouse
           let { x, y, vx, vy } = particle
 
           // Move particle
+          // Small attraction/repulsion based on mouse position for subtle interaction
+          const mx = mouseRef.current?.x ?? 0
+          const my = mouseRef.current?.y ?? 0
+          const ax = (mx - x) * 0.0005
+          const ay = (my - y) * 0.0005
+          vx += ax
+          vy += ay
+
           x += vx
           y += vy
 

@@ -11,7 +11,7 @@ import {
   FaTableTennis,
   FaAws,
   FaDocker,
-  FaBrain, // Added for "Problem Solving" visual
+  // FaBrain removed (unused)
 } from "react-icons/fa";
 import { IconType } from "react-icons";
 

@@ -74,7 +74,6 @@ export default function OrbitingSystem() {
           const Icon = tech.icon
           // Calculate position on the circle edge
           const angle = (index / technologies.length) * 360
-          const radius = 50 // 50% is the edge
           
           return (
              <div

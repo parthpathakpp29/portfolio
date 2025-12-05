@@ -49,7 +49,8 @@ Directives:
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    let { message, history } = body;
+    const { message } = body;
+    let { history } = body;
 
     if (!process.env.GEMINI_API_KEY) {
       return NextResponse.json(
@@ -80,10 +81,11 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ response: text });
 
-  } catch (error: any) {
-    console.error("Gemini API Error Details:", error);
+  } catch (error: unknown) {
+    const err = error instanceof Error ? error : new Error(String(error));
+    console.error("Gemini API Error Details:", err);
     return NextResponse.json(
-      { error: "Internal Server Error", details: error.message },
+      { error: "Internal Server Error", details: err.message },
       { status: 500 }
     );
   }

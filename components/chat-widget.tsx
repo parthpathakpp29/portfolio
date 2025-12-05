@@ -48,6 +48,7 @@ export default function ChatWidget() {
       const data = await res.json();
       setMessages((prev) => [...prev, { role: "model", text: data.response || "Connection error." }]);
     } catch (error) {
+      console.error("Chat widget error:", error);
       setMessages((prev) => [...prev, { role: "model", text: "Error: Neural link severed." }]);
     } finally {
       setIsLoading(false);
