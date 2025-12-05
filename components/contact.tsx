@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import SectionHeading from "./section-heading";
 import { motion } from "framer-motion";
 import { useSectionInView } from "@/lib/hooks";
 import { sendEmail } from "@/actions/sendEmail";
@@ -15,7 +14,7 @@ export default function Contact() {
     <motion.section
       id="contact"
       ref={ref}
-      className="mb-20 sm:mb-28 w-[min(100%,38rem)] text-center"
+      className="mb-20 sm:mb-28 w-[min(100%,38rem)] text-center relative z-20"
       initial={{
         opacity: 0,
       }}
@@ -29,18 +28,27 @@ export default function Contact() {
         once: true,
       }}
     >
-      <SectionHeading>Contact me</SectionHeading>
+      <div className="flex justify-center mb-8">
+        <h2 className="text-3xl md:text-4xl font-bold text-center">
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400">
+            Contact Me
+          </span>
+        </h2>
+      </div>
 
-      <p className="text-gray-700 -mt-6 dark:text-white/80">
+      <p className="text-gray-300 -mt-6">
         Please contact me directly at{" "}
-        <a className="underline" href="mailto:example@gmail.com">
+        <a 
+          className="underline font-medium text-purple-400 hover:text-purple-300 transition-colors" 
+          href="mailto:parthpathakpp1@gmail.com"
+        >
           parthpathakpp1@gmail.com
         </a>{" "}
         or through this form.
       </p>
 
       <form
-        className="mt-10 flex flex-col dark:text-black"
+        className="mt-10 flex flex-col"
         action={async (formData) => {
           const { error } = await sendEmail(formData);
 
@@ -52,22 +60,29 @@ export default function Contact() {
           toast.success("Email sent successfully!");
         }}
       >
+        {/* Glass Input Field */}
         <input
-          className="h-14 px-4 rounded-lg borderBlack dark:bg-white dark:bg-opacity-80 dark:focus:bg-opacity-100 transition-all dark:outline-none"
+          className="h-14 px-4 rounded-xl border border-white/10 bg-white/5 text-white placeholder-white/50 backdrop-blur-sm focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-transparent transition-all"
           name="senderEmail"
           type="email"
           required
           maxLength={500}
           placeholder="Your email"
         />
+        
+        {/* Glass Textarea */}
         <textarea
-          className="h-52 my-3 rounded-lg borderBlack p-4 dark:bg-white dark:bg-opacity-80 dark:focus:bg-opacity-100 transition-all dark:outline-none"
+          className="h-52 my-3 rounded-xl border border-white/10 bg-white/5 text-white placeholder-white/50 backdrop-blur-sm focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-transparent transition-all p-4"
           name="message"
           placeholder="Your message"
           required
           maxLength={5000}
         />
-        <SubmitBtn />
+        
+        {/* Submit Button Container */}
+        <div className="flex justify-center">
+          <SubmitBtn />
+        </div>
       </form>
     </motion.section>
   );

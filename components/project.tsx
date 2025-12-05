@@ -4,14 +4,29 @@ import { useRef } from "react";
 import Image, { StaticImageData } from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
+import { Tilt } from "react-tilt"; // 1. Import Tilt
 
-// Update ProjectProps to accept both mutable and readonly arrays
 type ProjectProps = {
   title: string;
   description: string;
   tags: string[] | readonly string[];
   imageUrl?: string | StaticImageData;
-  liveLink?: string; // Optional live link
+  liveLink?: string;
+};
+
+// 2. Configure the 3D Physics
+const defaultOptions = {
+  reverse: false,        // Reverse the tilt direction
+  max: 20,               // Max tilt rotation (degrees) - increased for drama
+  perspective: 1000,     // Transform perspective, the lower the more extreme
+  scale: 1.05,           // 2 = 200%, 1.5 = 150%, etc..
+  speed: 1000,           // Speed of the enter/exit transition
+  transition: true,      // Set a transition on enter/exit.
+  axis: null,            // What axis should be disabled. Can be X or Y.
+  reset: true,           // If the tilt effect has to be reset on exit.
+  easing: "cubic-bezier(.03,.98,.52,.99)", // Smooth easing
+  glare: true,           // 3. ENABLE GLARE (Holographic effect)
+  "max-glare": 0.3,      // Opacity of the glare (0 - 1)
 };
 
 export default function Project({
@@ -31,6 +46,61 @@ export default function Project({
 
   const safeTags = Array.isArray(tags) ? tags : [];
 
+  // Content Component
+  const ProjectContent = () => (
+    <section className="bg-white/5 max-w-[45rem] border border-white/10 rounded-2xl overflow-hidden sm:pr-8 relative sm:h-[24rem] transition-all duration-500 sm:group-even:pl-8 backdrop-blur-sm hover:shadow-[0_0_40px_rgba(168,85,247,0.2)]">
+      
+      {/* Background Gradient Blob for depth */}
+      <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-purple-500/10 blur-3xl opacity-0 group-hover:opacity-100 transition duration-500" />
+      <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 rounded-full bg-blue-500/10 blur-3xl opacity-0 group-hover:opacity-100 transition duration-500" />
+
+      <div className="pt-4 pb-7 px-5 sm:pl-10 sm:pr-2 sm:pt-10 sm:max-w-[50%] flex flex-col h-full sm:group-even:ml-[20rem] relative z-20">
+        <h3 className="text-2xl font-bold text-white group-hover:text-purple-300 transition-colors">
+            {title}
+        </h3>
+        
+        <p className="mt-2 leading-relaxed text-gray-300 dark:text-gray-300">
+          {description}
+        </p>
+        
+        {safeTags.length > 0 && (
+          <ul className="flex flex-wrap mt-4 gap-2 sm:mt-auto">
+            {safeTags.map((tag, index) => (
+              <li
+                className="bg-white/10 border border-white/5 px-3 py-1 text-[0.7rem] uppercase tracking-wider text-white/90 rounded-full hover:bg-white/20 hover:scale-105 transition-all cursor-default shadow-lg"
+                key={index}
+              >
+                {tag}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      {imageUrl && (
+        <Image
+          src={imageUrl}
+          alt="Project I worked on"
+          quality={95}
+          className="absolute hidden sm:block top-8 -right-40 w-[30rem] rounded-t-xl shadow-2xl
+          transition-all duration-500
+          border border-white/10
+          group-hover:scale-[1.04]
+          group-hover:-translate-x-3
+          group-hover:translate-y-3
+          group-hover:-rotate-2
+          
+          group-even:group-hover:translate-x-3
+          group-even:group-hover:translate-y-3
+          group-even:group-hover:rotate-2
+          
+          group-even:right-[initial] group-even:-left-40
+          z-10" // Ensure image is above background but below glare
+        />
+      )}
+    </section>
+  );
+
   return (
     <motion.div
       ref={ref}
@@ -38,59 +108,20 @@ export default function Project({
         scale: scaleProgess,
         opacity: opacityProgess,
       }}
-      className="group mb-3 sm:mb-8 last:mb-0"
+      className="group mb-8 sm:mb-16 last:mb-0 w-full max-w-[45rem]"
     >
-      {liveLink ? (
-        <Link href={liveLink} target="_blank" rel="noopener noreferrer">
-          <section
-            className="bg-gray-100 max-w-[42rem] border border-black/5 rounded-lg overflow-hidden sm:pr-8 relative sm:h-[20rem] hover:bg-gray-200 transition sm:group-even:pl-8 dark:text-white dark:bg-white/10 dark:hover:bg-white/20 cursor-pointer"
-          >
-            {/* Rest of the section content remains the same */}
-            <div className="pt-4 pb-7 px-5 sm:pl-10 sm:pr-2 sm:pt-10 sm:max-w-[50%] flex flex-col h-full sm:group-even:ml-[18rem]">
-              <h3 className="text-2xl font-semibold">{title}</h3>
-              <p className="mt-2 leading-relaxed text-gray-700 dark:text-white/70">
-                {description}
-              </p>
-              {safeTags.length > 0 && (
-                <ul className="flex flex-wrap mt-4 gap-2 sm:mt-auto">
-                  {safeTags.map((tag, index) => (
-                    <li
-                      className="bg-black/[0.7] px-3 py-1 text-[0.7rem] uppercase tracking-wider text-white rounded-full dark:text-white/70"
-                      key={index}
-                    >
-                      {tag}
-                    </li>
-                  ))}
-                </ul>
-              )}
+      {/* 4. Wrap the card in Tilt */}
+      <Tilt options={defaultOptions}>
+         {liveLink ? (
+            <Link href={liveLink} target="_blank" rel="noopener noreferrer" className="block outline-none cursor-none">
+                <ProjectContent />
+            </Link>
+         ) : (
+            <div className="cursor-default">
+                <ProjectContent />
             </div>
-
-            {imageUrl && (
-              <Image
-                src={imageUrl}
-                alt="Project I worked on"
-                quality={95}
-                className="absolute hidden sm:block top-8 -right-40 w-[28.25rem] rounded-t-lg shadow-2xl
-                transition
-                group-hover:scale-[1.04]
-                group-hover:-translate-x-3
-                group-hover:translate-y-3
-                group-hover:-rotate-2
-                group-even:group-hover:translate-x-3
-                group-even:group-hover:translate-y-3
-                group-even:group-hover:rotate-2
-                group-even:right-[initial] group-even:-left-40"
-              />
-            )}
-          </section>
-        </Link>
-      ) : (
-        // If no live link, render the section without a link
-        <section className="bg-gray-100 max-w-[42rem] border border-black/5 rounded-lg overflow-hidden sm:pr-8 relative sm:h-[20rem] hover:bg-gray-200 transition sm:group-even:pl-8 dark:text-white dark:bg-white/10 dark:hover:bg-white/20">
-          {/* Same section content as above */}
-          {/* ... */}
-        </section>
-      )}
+         )}
+      </Tilt>
     </motion.div>
   );
 }

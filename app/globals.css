@@ -13,3 +13,5 @@ html.dark {
 .borderBlack {
   @apply border border-black/10;
 }
+/* Add this to the bottom of globals.css */
+
