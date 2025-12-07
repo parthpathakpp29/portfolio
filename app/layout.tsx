@@ -5,6 +5,7 @@ import ActiveSectionContextProvider from "@/context/active-section-context";
 import Footer from "@/components/footer";
 import ThemeContextProvider from "@/context/theme-context";
 import { Toaster } from "react-hot-toast";
+import IntroLoader from "@/components/intro-loader"
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,7 +25,7 @@ export default function RootLayout({
       <body
         className={`${inter.className} bg-zinc-950 text-zinc-100 relative pt-28 sm:pt-36`}
       >
-
+       <IntroLoader />
         <ThemeContextProvider>
           <ActiveSectionContextProvider>
             <Header />
