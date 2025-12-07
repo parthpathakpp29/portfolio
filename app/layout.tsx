@@ -6,6 +6,7 @@ import Footer from "@/components/footer";
 import ThemeContextProvider from "@/context/theme-context";
 import { Toaster } from "react-hot-toast";
 import IntroLoader from "@/components/intro-loader"
+import ChatWidget from "@/components/chat-widget"
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,6 +32,7 @@ export default function RootLayout({
             <Header />
             {children}
             <Footer />
+            <ChatWidget />
             <Toaster position="top-right" />
           </ActiveSectionContextProvider>
         </ThemeContextProvider>
