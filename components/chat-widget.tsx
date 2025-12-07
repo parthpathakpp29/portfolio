@@ -34,7 +34,8 @@ export default function ChatWidget() {
     setIsLoading(true);
 
     try {
-      const historyForApi = messages.map(m => ({
+      // Only send actual conversation history (skip the initial system message)
+      const conversationHistory = messages.slice(1).map(m => ({
         role: m.role,
         parts: [{ text: m.text }]
       }));
@@ -42,7 +43,7 @@ export default function ChatWidget() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userMessage, history: historyForApi }),
+        body: JSON.stringify({ message: userMessage, history: conversationHistory }),
       });
 
       const data = await res.json();
@@ -95,16 +96,28 @@ export default function ChatWidget() {
                         : "bg-white/5 text-gray-200 rounded-bl-none border border-white/10"
                     }`}
                   >
-                    <ReactMarkdown>{msg.text}</ReactMarkdown>
+                    <ReactMarkdown
+                      components={{
+                        p: ({children}) => <p className="mb-2 last:mb-0">{children}</p>,
+                        ul: ({children}) => <ul className="list-disc list-inside mb-2 space-y-1">{children}</ul>,
+                        ol: ({children}) => <ol className="list-decimal list-inside mb-2 space-y-1">{children}</ol>,
+                        li: ({children}) => <li className="ml-2">{children}</li>,
+                        strong: ({children}) => <strong className="font-semibold text-purple-300">{children}</strong>,
+                        code: ({children}) => <code className="bg-black/30 px-1.5 py-0.5 rounded text-xs">{children}</code>,
+                        a: ({href, children}) => <a href={href} className="text-purple-400 hover:underline" target="_blank" rel="noopener noreferrer">{children}</a>,
+                      }}
+                    >
+                      {msg.text}
+                    </ReactMarkdown>
                   </div>
                 </div>
               ))}
               {isLoading && (
                  <div className="flex justify-start">
                     <div className="bg-white/5 p-3 rounded-2xl rounded-bl-none border border-white/10 flex gap-1">
-                        <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" />
-                        <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce delay-100" />
-                        <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce delay-200" />
+                        <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0ms'}} />
+                        <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '150ms'}} />
+                        <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '300ms'}} />
                     </div>
                  </div>
               )}

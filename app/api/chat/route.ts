@@ -39,11 +39,35 @@ SKILLS:
 HOBBIES: Table tennis, Gym, Reels.
 --- END LOG ---
 
-Directives:
-- Be concise (2-3 sentences max).
-- Use a tech/sci-fi tone (e.g., "Accessing database...", "Data retrieved").
-- Use emojis like ⚡, 🤖, 🚀.
-- If asked about something not in the log, say "Data corrupted/missing. Please contact Parth directly."
+**RESPONSE FORMAT RULES:**
+- Keep responses SHORT and SCANNABLE (2-4 sentences max for simple questions)
+- Use bullet points ONLY when listing multiple items (3+ items)
+- Use **bold** for key names/technologies to make them stand out
+- Add line breaks between different topics for readability
+- Use emojis sparingly (⚡, 🤖, 🚀, 💻, 📊) - one per response max
+
+**TONE:**
+- Tech/sci-fi style: "Data retrieved...", "Accessing database...", "Neural link established"
+- Be confident and direct, not overly formal
+- If asked about something not in the log, say "⚠️ Data not found in current database. Suggest contacting Parth directly at parthpathakpp1@gmail.com"
+
+**EXAMPLES:**
+
+Q: "What are Parth's skills?"
+A: "💻 **Tech Stack Retrieved:**
+
+**Languages:** JavaScript, TypeScript, Python, C/C++
+**Frameworks:** Next.js, React, Node.js, Express
+**Databases:** MongoDB, MySQL, Supabase, NeonDB
+**Tools:** Git, AWS, Docker, Figma"
+
+Q: "Tell me about JobTrakk"
+A: "🚀 **JobTrakk** is Parth's AI-powered job application platform built with **Next.js** and **Supabase**. Key features: auto-generates cover letters using **Gemini AI**, AI chatbot for resume optimization, and a Kanban board for tracking applications. Currently live!"
+
+Q: "Where did he intern?"
+A: "⚡ **Internship Log:**
+- **AlgoFlow AI** (Feb-May 2025): Built food delivery dashboard with React.js
+- **Runon Pvt Ltd** (Nov-Dec 2023): Frontend dev creating pixel-perfect Figma components"
 `;
 
 export async function POST(req: Request) {
@@ -59,15 +83,17 @@ export async function POST(req: Request) {
       );
     }
 
-    // ✅ FIX: Filter history to ensure it complies with Gemini rules
-    // Rule: History must start with 'user', not 'model'.
-    // We remove the initial "System Online" greeting if it exists.
-    if (history && history.length > 0 && history[0].role === "model") {
-      history = history.slice(1);
+    // Ensure history starts with user message, not model
+    // This is required by Gemini API
+    if (history && history.length > 0) {
+      // Remove any leading model messages
+      while (history.length > 0 && history[0].role === "model") {
+        history.shift();
+      }
     }
 
     const model = genAI.getGenerativeModel({ 
-      model: "gemini-1.5-flash",
+       model: "gemini-2.5-flash", 
       systemInstruction: SYSTEM_PROMPT,
     });
 
@@ -83,10 +109,21 @@ export async function POST(req: Request) {
 
   } catch (error: unknown) {
     const err = error instanceof Error ? error : new Error(String(error));
-    console.error("Gemini API Error Details:", err);
+    console.error("Gemini API Error:", err.message);
+    
+    // Return more helpful error messages
+    if (err.message.includes("API key")) {
+      return NextResponse.json(
+        { error: "⚠️ API configuration error. Please contact administrator." },
+        { status: 500 }
+      );
+    }
+    
     return NextResponse.json(
-      { error: "Internal Server Error", details: err.message },
+      { error: "⚠️ Neural link interrupted. Please try again." },
       { status: 500 }
     );
   }
 }
+
+export const runtime = "nodejs";

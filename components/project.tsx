@@ -4,7 +4,7 @@ import { useRef } from "react";
 import Image, { StaticImageData } from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
-import { Tilt } from "react-tilt"; // 1. Import Tilt
+import { Tilt } from "react-tilt"; 
 
 type ProjectProps = {
   title: string;
@@ -16,17 +16,17 @@ type ProjectProps = {
 
 // 2. Configure the 3D Physics
 const defaultOptions = {
-  reverse: false,        // Reverse the tilt direction
-  max: 20,               // Max tilt rotation (degrees) - increased for drama
-  perspective: 1000,     // Transform perspective, the lower the more extreme
-  scale: 1.05,           // 2 = 200%, 1.5 = 150%, etc..
-  speed: 1000,           // Speed of the enter/exit transition
-  transition: true,      // Set a transition on enter/exit.
-  axis: null,            // What axis should be disabled. Can be X or Y.
-  reset: true,           // If the tilt effect has to be reset on exit.
-  easing: "cubic-bezier(.03,.98,.52,.99)", // Smooth easing
-  glare: true,           // 3. ENABLE GLARE (Holographic effect)
-  "max-glare": 0.3,      // Opacity of the glare (0 - 1)
+  reverse: false,        
+  max: 20,               
+  perspective: 1000,     
+  scale: 1.05,          
+  speed: 1000,        
+  transition: true,      
+  axis: null,       
+  reset: true,  
+  easing: "cubic-bezier(.03,.98,.52,.99)", 
+  glare: true,          
+  "max-glare": 0.3,   
 };
 
 export default function Project({

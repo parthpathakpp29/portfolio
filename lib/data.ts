@@ -1,7 +1,7 @@
 import React from "react";
 import { LuGraduationCap } from "react-icons/lu";
 import schImage from "@/public/schss1.png";
-import appleImage from "@/public/app1.png";
+import jobtrakkImage from "@/public/jobtrakkImage.png"
 import saasImage from "@/public/ss1.png";
 import zcrumImage from "@/public/zcrumshots.png"
 import aishotsImage from "@/public/aisaas.png"
@@ -45,11 +45,18 @@ export const experiencesData = [
 
 export const projectsData = [
   {
+    title: "JobTrakk",
+    description: "Built an AI-powered platform that automates and manages job applications end-to-end.",
+    tags: ["NextJs", "NodeJS", "Tailwind", "SupaBase","Gemini API"],
+    imageUrl: jobtrakkImage,
+    liveLink: "https://jobtrakk.vercel.app/", 
+  },
+  {
     title: "Schedulee",
     description: "This is a 1:1 meeting booking site just like Calendly . It has all the features that are required.",
     tags: ["React", "Next.js", "Tailwind", "NeonDB"],
     imageUrl: schImage,
-    liveLink: "https://schedulee.vercel.app/", // Add live link
+    liveLink: "https://schedulee.vercel.app/", 
   },
   {
     title: "Zcrum",
@@ -73,11 +80,11 @@ export const projectsData = [
     liveLink: "https://nextjs-saas-ten.vercel.app", // Add live link
   },
   {
-    title: "Apple Doors",
-    description: "Apple Doors is a Full Stack Website for buying doors and it has an unique functionality that user can customize the door and view them in 3D.",
-    tags: ["React", "Node.JS", "Tailwind", "MongoDB"],
-    imageUrl: appleImage,
-    liveLink: "https://appledoors-1.onrender.com/", // Add live link
+    title: "JobTrakk",
+    description: "Built an AI-powered platform that automates and manages job applications end-to-end.",
+    tags: ["NextJs", "NodeJS", "Tailwind", "SupaBase","Gemini API"],
+    imageUrl: jobtrakkImage,
+    liveLink: "https://jobtrakk.vercel.app/", 
   },
 ] as const;
 
