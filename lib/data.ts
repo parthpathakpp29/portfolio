@@ -79,13 +79,7 @@ export const projectsData = [
     imageUrl: saasImage,
     liveLink: "https://nextjs-saas-ten.vercel.app", // Add live link
   },
-  {
-    title: "JobTrakk",
-    description: "Built an AI-powered platform that automates and manages job applications end-to-end.",
-    tags: ["NextJs", "NodeJS", "Tailwind", "SupaBase","Gemini API"],
-    imageUrl: jobtrakkImage,
-    liveLink: "https://jobtrakk.vercel.app/", 
-  },
+  
 ] as const;
 
 export const skillsData = [
