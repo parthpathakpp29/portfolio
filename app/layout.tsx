@@ -1,5 +1,4 @@
 import Header from "@/components/header";
-import BlackHole from "@/components/black-hole"; // Import the new component
 import "./globals.css";
 import { Inter } from "next/font/google";
 import ActiveSectionContextProvider from "@/context/active-section-context";
@@ -21,7 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="!scroll-smooth">
-      {/* Set main background to black/very dark grey to make the hole pop */}
+
       <body
         className={`${inter.className} bg-zinc-950 text-zinc-100 relative pt-28 sm:pt-36`}
       >
