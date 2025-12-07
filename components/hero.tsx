@@ -1,6 +1,5 @@
 "use client"
 
-import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
 import { BsArrowRight, BsGithub, BsLinkedin } from "react-icons/bs"
@@ -10,22 +9,13 @@ import OrbitingIcons from './orbiting-system'
 import ParticleEffect from './particle-effect'
 
 export default function Hero() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY })
-    }
-
-    window.addEventListener("mousemove", handleMouseMove)
-    return () => window.removeEventListener("mousemove", handleMouseMove)
-  }, [])
-
   return (
     <section className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden pt-0 pb-0">
       {/* Background layers */}
       <AnimatedBackground />
-      <ParticleEffect mousePosition={mousePosition} />
+      
+      {/* FIXED: Removed mousePosition prop */}
+      <ParticleEffect />
 
       {/* Main content */}
       <div className="relative z-20 flex flex-col items-center text-center px-4 max-w-4xl">
