@@ -74,7 +74,8 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
     const { message } = body;
-    let { history } = body;
+   const { history } = body;
+
 
     if (!process.env.GEMINI_API_KEY) {
       return NextResponse.json(
