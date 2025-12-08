@@ -18,7 +18,7 @@ export default function Hero() {
       <ParticleEffect />
 
       {/* Main content */}
-      <div className="relative z-20 flex flex-col items-center text-center px-4 max-w-4xl">
+      <div className="relative z-20 flex flex-col items-center text-center px-4 max-w-4xl mt-[-40px] sm:mt-0">
         {/* Profile Section with Orbiting Icons */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}

@@ -57,7 +57,7 @@ export default function ChatWidget() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-[9999] flex flex-col items-end gap-4">
+    <div className="fixed inset-x-4 bottom-4 sm:bottom-6 sm:right-6 z-[9999] flex flex-col items-center sm:items-end gap-4">
       
       {/* 1. The Chat Window (Glassmorphism) */}
       <AnimatePresence>
@@ -66,7 +66,8 @@ export default function ChatWidget() {
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="w-[350px] sm:w-[400px] h-[500px] bg-black/60 backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_0_40px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden"
+            className="w-full sm:w-[350px] max-w-full h-[60vh] sm:h-[500px] bg-black/90 sm:bg-black/60 backdrop-blur-xl border border-white/10 rounded-2xl sm:rounded-2xl shadow-[0_0_40px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden"
+            style={{ backdropFilter: 'blur(12px)' }}
           >
             {/* Header */}
             <div className="p-4 border-b border-white/10 bg-white/5 flex justify-between items-center">
@@ -149,7 +150,7 @@ export default function ChatWidget() {
         onClick={() => setIsOpen(!isOpen)}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
-        className="group relative w-14 h-14 bg-white/10 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center shadow-lg hover:shadow-[0_0_30px_rgba(168,85,247,0.4)] transition-all overflow-hidden"
+        className="group relative w-12 h-12 sm:w-14 sm:h-14 bg-white/10 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center shadow-lg hover:shadow-[0_0_30px_rgba(168,85,247,0.4)] transition-all overflow-hidden"
       >
         <div className="absolute inset-0 bg-gradient-to-tr from-purple-600 to-blue-600 opacity-20 group-hover:opacity-40 transition-opacity" />
         {isOpen ? (

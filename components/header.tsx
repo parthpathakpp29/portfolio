@@ -22,7 +22,7 @@ export default function Header() {
   };
 
   return (
-    <header className="z-[999] relative flex justify-center pt-4 sm:pt-6">
+    <header className="z-[999] relative flex justify-center pt-0 sm:pt-0">
       
       {/* ======================= */}
       {/* DESKTOP VIEW (Pill)  */}
