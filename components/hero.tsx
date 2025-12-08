@@ -9,8 +9,6 @@ import OrbitingIcons from './orbiting-system'
 import ParticleEffect from './particle-effect'
 
 export default function Hero() {
-  // REMOVED: mousePosition state (handled internally by ParticleEffect now)
-
   return (
     <section className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden pt-0 pb-0">
       {/* Background layers */}
