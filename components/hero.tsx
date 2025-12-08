@@ -14,7 +14,6 @@ export default function Hero() {
       {/* Background layers */}
       <AnimatedBackground />
       
-      {/* FIXED: Removed mousePosition prop */}
       <ParticleEffect />
 
       {/* Main content */}
@@ -34,9 +33,10 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="space-y-6"
+          className="space-y-4 sm:space-y-6" // Reduced spacing on mobile
         >
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight">
+          {/* UPDATED: text-3xl on mobile, scaling up to original sizes on larger screens */}
+          <h1 className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight">
             <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">
               I’m Parth Pathak —
             </span>
@@ -46,7 +46,8 @@ export default function Hero() {
             </span>
           </h1>
 
-          <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
+          {/* UPDATED: text-sm on mobile, scaling up to original sizes */}
+          <p className="text-sm sm:text-lg md:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
             I design scalable, high-performance web applications and developer tools.
             Specialties: <span className="text-purple-400 font-semibold">Next.js</span>, <span className="text-blue-400 font-semibold">TypeScript</span>,
             and <span className="text-pink-400 font-semibold">AI integrations</span> — focused on performance and delightful UX.
@@ -58,11 +59,12 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="flex flex-col sm:flex-row gap-6 items-center mt-12 z-30"
+          className="flex flex-col sm:flex-row gap-6 items-center mt-8 sm:mt-12 z-30"
         >
           <Link
             href="#contact"
-            className="group relative px-8 py-4 text-lg font-semibold text-black bg-white rounded-full overflow-hidden transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-2xl"
+            // UPDATED: Adjusted padding (px-6 py-3) and font size (text-base) for mobile
+            className="group relative px-6 py-3 sm:px-8 sm:py-4 text-base sm:text-lg font-semibold text-black bg-white rounded-full overflow-hidden transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-2xl"
           >
             <span className="relative z-10 flex items-center gap-2">
               Hire Me <BsArrowRight className="group-hover:translate-x-1 transition" />
@@ -82,9 +84,9 @@ export default function Hero() {
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.1, y: -5 }}
-                className="p-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white hover:bg-white/20 hover:border-white/40 transition-all duration-300 group"
+                className="p-3 sm:p-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white hover:bg-white/20 hover:border-white/40 transition-all duration-300 group"
               >
-                <Icon size={24} className="group-hover:scale-110 transition" />
+                <Icon size={20} className="sm:w-6 sm:h-6 group-hover:scale-110 transition" />
               </motion.a>
             ))}
           </div>

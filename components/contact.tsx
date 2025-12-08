@@ -14,7 +14,7 @@ export default function Contact() {
     <motion.section
       id="contact"
       ref={ref}
-      className="mb-20 sm:mb-28 w-[min(100%,38rem)] text-center relative z-20"
+      className="mb-20 sm:mb-28 w-[min(100%,38rem)] text-center relative z-20 px-4 sm:px-0"
       initial={{
         opacity: 0,
       }}
@@ -29,17 +29,17 @@ export default function Contact() {
       }}
     >
       <div className="flex justify-center mb-8">
-        <h2 className="text-3xl md:text-4xl font-bold text-center">
+        <h2 className="text-2xl sm:text-4xl font-bold text-center">
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400">
             Contact Me
           </span>
         </h2>
       </div>
 
-      <p className="text-gray-300 -mt-6">
+      <p className="text-gray-300 -mt-4 sm:-mt-6 text-sm sm:text-base max-w-[90%] mx-auto">
         Please contact me directly at{" "}
         <a 
-          className="underline font-medium text-purple-400 hover:text-purple-300 transition-colors" 
+          className="underline font-medium text-purple-400 hover:text-purple-300 transition-colors break-all sm:break-normal" 
           href="mailto:parthpathakpp1@gmail.com"
         >
           parthpathakpp1@gmail.com
@@ -48,7 +48,7 @@ export default function Contact() {
       </p>
 
       <form
-        className="mt-10 flex flex-col"
+        className="mt-8 sm:mt-10 flex flex-col"
         action={async (formData) => {
           const { error } = await sendEmail(formData);
 
@@ -62,7 +62,7 @@ export default function Contact() {
       >
         {/* Glass Input Field */}
         <input
-          className="h-14 px-4 rounded-xl border border-white/10 bg-white/5 text-white placeholder-white/50 backdrop-blur-sm focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-transparent transition-all"
+          className="h-12 sm:h-14 px-4 rounded-xl border border-white/10 bg-white/5 text-white placeholder-white/50 backdrop-blur-sm focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-transparent transition-all text-sm sm:text-base"
           name="senderEmail"
           type="email"
           required
@@ -72,7 +72,7 @@ export default function Contact() {
         
         {/* Glass Textarea */}
         <textarea
-          className="h-52 my-3 rounded-xl border border-white/10 bg-white/5 text-white placeholder-white/50 backdrop-blur-sm focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-transparent transition-all p-4"
+          className="h-40 sm:h-52 my-3 rounded-xl border border-white/10 bg-white/5 text-white placeholder-white/50 backdrop-blur-sm focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-transparent transition-all p-4 text-sm sm:text-base"
           name="message"
           placeholder="Your message"
           required
@@ -80,7 +80,7 @@ export default function Contact() {
         />
         
         {/* Submit Button Container */}
-        <div className="flex justify-center">
+        <div className="flex justify-center mt-2">
           <SubmitBtn />
         </div>
       </form>

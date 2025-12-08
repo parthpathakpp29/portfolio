@@ -14,7 +14,7 @@ type ProjectProps = {
   liveLink?: string;
 };
 
-// 2. Configure the 3D Physics
+// Configure the 3D Physics
 const defaultOptions = {
   reverse: false,        
   max: 20,               
@@ -48,18 +48,36 @@ export default function Project({
 
   // Content Component
   const ProjectContent = () => (
-    <section className="bg-white/5 max-w-[45rem] border border-white/10 rounded-2xl overflow-hidden sm:pr-8 relative sm:h-[24rem] transition-all duration-500 sm:group-even:pl-8 backdrop-blur-sm hover:shadow-[0_0_40px_rgba(168,85,247,0.2)]">
+    <section className="bg-white/5 max-w-[45rem] border border-white/10 rounded-2xl overflow-hidden relative sm:h-[24rem] transition-all duration-500 hover:shadow-[0_0_40px_rgba(168,85,247,0.2)] flex flex-col sm:block">
       
       {/* Background Gradient Blob for depth */}
       <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-purple-500/10 blur-3xl opacity-0 group-hover:opacity-100 transition duration-500" />
       <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 rounded-full bg-blue-500/10 blur-3xl opacity-0 group-hover:opacity-100 transition duration-500" />
 
-      <div className="pt-4 pb-7 px-5 sm:pl-10 sm:pr-2 sm:pt-10 sm:max-w-[50%] flex flex-col h-full sm:group-even:ml-[20rem] relative z-20">
+      {/* ==================== */}
+      {/* MOBILE IMAGE (New)   */}
+      {/* ==================== */}
+      {/* Shows on mobile, hidden on sm+ screens */}
+      {imageUrl && (
+        <div className="relative w-full h-52 sm:hidden overflow-hidden border-b border-white/10">
+          <Image
+            src={imageUrl}
+            alt={title}
+            fill
+            className="object-cover object-top hover:scale-105 transition-transform duration-500"
+          />
+        </div>
+      )}
+
+      {/* ==================== */}
+      {/* CONTENT SECTION      */}
+      {/* ==================== */}
+      <div className="pt-5 pb-7 px-5 sm:pl-10 sm:pr-2 sm:pt-10 sm:max-w-[50%] flex flex-col h-full sm:group-even:ml-[20rem] relative z-20">
         <h3 className="text-2xl font-bold text-white group-hover:text-purple-300 transition-colors">
             {title}
         </h3>
         
-        <p className="mt-2 leading-relaxed text-gray-300 dark:text-gray-300">
+        <p className="mt-2 leading-relaxed text-gray-300 dark:text-gray-300 text-sm sm:text-base">
           {description}
         </p>
         
@@ -77,6 +95,10 @@ export default function Project({
         )}
       </div>
 
+      {/* ==================== */}
+      {/* DESKTOP IMAGE        */}
+      {/* ==================== */}
+      {/* Hidden on mobile, shows on sm+ screens */}
       {imageUrl && (
         <Image
           src={imageUrl}
@@ -95,7 +117,7 @@ export default function Project({
           group-even:group-hover:rotate-2
           
           group-even:right-[initial] group-even:-left-40
-          z-10" // Ensure image is above background but below glare
+          z-10"
         />
       )}
     </section>
@@ -110,7 +132,6 @@ export default function Project({
       }}
       className="group mb-8 sm:mb-16 last:mb-0 w-full max-w-[45rem]"
     >
-      {/* 4. Wrap the card in Tilt */}
       <Tilt options={defaultOptions}>
          {liveLink ? (
             <Link href={liveLink} target="_blank" rel="noopener noreferrer" className="block outline-none cursor-none">

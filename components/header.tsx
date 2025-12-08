@@ -23,12 +23,9 @@ export default function Header() {
 
   return (
     <header className="z-[999] relative flex justify-center pt-0 sm:pt-0">
-      
-      {/* ======================= */}
-      {/* DESKTOP VIEW (Pill)  */}
-      {/* ======================= */}
+
       <motion.div
-        className="hidden sm:block fixed top-4 sm:top-6 h-[3.5rem] w-full max-w-[28rem] rounded-full border border-white/10 bg-black/20 shadow-[0_0_20px_rgba(147,51,234,0.15)] backdrop-blur-[10px]"
+        className="hidden sm:block fixed top-4 sm:top-6 h-[3.5rem] w-full max-w-[32rem] rounded-full border border-white/10 bg-black/20 shadow-[0_0_20px_rgba(147,51,234,0.15)] backdrop-blur-[10px]"
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
       >

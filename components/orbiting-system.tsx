@@ -26,18 +26,21 @@ const technologies = [
 ]
 
 export default function OrbitingSystem() {
-  // Default to desktop radius to match SSR, then adjust
-  const [radius, setRadius] = useState(230)
+  // Default to desktop radius (290)
+  const [radius, setRadius] = useState(290)
 
   useEffect(() => {
     const updateRadius = () => {
       const w = window.innerWidth
       if (w < 640) {
-        setRadius(120) // Mobile Radius (Ring width = 240px)
+        // MOBILE: Radius increased from 120 -> 160 (Diameter 320px)
+        setRadius(120) 
       } else if (w < 1024) {
-        setRadius(170) // Tablet Radius (Ring width = 340px)
+        // TABLET: Radius increased from 170 -> 220 (Diameter 440px)
+        setRadius(200) 
       } else {
-        setRadius(230) // Desktop Radius (Ring width = 460px)
+        // DESKTOP: Radius increased from 230 -> 290 (Diameter 580px)
+        setRadius(260) 
       }
     }
 
@@ -50,7 +53,7 @@ export default function OrbitingSystem() {
   }, [])
 
   return (
-    <div className="relative w-full h-[500px] sm:h-[500px] md:h-[600px] flex items-center justify-center overflow-visible">
+    <div className="relative w-full h-[500px] sm:h-[500px] md:h-[650px] flex items-center justify-center overflow-visible">
       
       {/* -------------------------------------------------- */}
       {/* 1. CENTER: The Sun (Your Photo)                    */}
@@ -58,7 +61,7 @@ export default function OrbitingSystem() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
          <div className="absolute inset-0 bg-purple-500 blur-[50px] opacity-30 rounded-full scale-110 animate-pulse"></div>
          
-         {/* Responsive Image Size: w-28 (112px) on mobile, w-40 (160px) on desktop */}
+         {/* Responsive Image Size */}
          <div className="relative w-28 h-28 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-white/10 shadow-2xl bg-black">
             <Image
                 src={ParthImage}
@@ -73,24 +76,25 @@ export default function OrbitingSystem() {
 
       {/* -------------------------------------------------- */}
       {/* 2. INNER RING: Decorative Dashed Lines             */}
+      {/* Also increased slightly to fill the gap            */}
       {/* -------------------------------------------------- */}
       <motion.div
         style={{ translateX: "-50%", translateY: "-50%" }}
         animate={{ rotate: 360 }}
         transition={{ duration: 60, ease: "linear", repeat: Infinity }}
-        // Mobile: 160px width | Desktop: 300px width
-        className="absolute top-1/2 left-1/2 w-[160px] h-[160px] sm:w-[240px] sm:h-[240px] md:w-[320px] md:h-[320px] rounded-full border border-white/5 border-dashed z-0"
+        // Mobile: 200px | Tablet: 300px | Desktop: 400px
+        className="absolute top-1/2 left-1/2 w-[200px] h-[200px] sm:w-[300px] sm:h-[300px] md:w-[400px] md:h-[400px] rounded-full border border-white/5 border-dashed z-0"
       />
 
       {/* -------------------------------------------------- */}
       {/* 3. OUTER RING: The Orbit Path                      */}
       {/* SIZES MUST MATCH THE JS RADIUS * 2                 */}
-      {/* Mobile Radius 120 * 2 = 240px                      */}
-      {/* Tablet Radius 170 * 2 = 340px                      */}
-      {/* Desktop Radius 230 * 2 = 460px                     */}
+      {/* Mobile Radius 160 * 2 = 320px                      */}
+      {/* Tablet Radius 220 * 2 = 440px                      */}
+      {/* Desktop Radius 290 * 2 = 580px                     */}
       {/* -------------------------------------------------- */}
       <div 
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/10 z-10 w-[240px] h-[240px] sm:w-[340px] sm:h-[340px] md:w-[460px] md:h-[460px]"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/10 z-10 w-[320px] h-[320px] sm:w-[440px] sm:h-[440px] md:w-[580px] md:h-[580px]"
       >
         {/* Icons container - Rotates around the center */}
         <motion.div
@@ -101,11 +105,6 @@ export default function OrbitingSystem() {
             {technologies.map((tech, index) => {
               const Icon = tech.icon
               const angle = (index / technologies.length) * 360
-              const angleRad = (angle * Math.PI) / 180
-              
-              // We position them using absolute + trigonometry relative to the container center
-              // Since the container matches the diameter (2*radius), we can use percentages or simple math.
-              // Actually, standard trigonometry with the dynamic radius state is safest:
               
               return (
                 <div
