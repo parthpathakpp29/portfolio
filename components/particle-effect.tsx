@@ -1,95 +1,155 @@
-"use client"
+"use client";
 
-import { useEffect, useState, useRef } from "react"
-import { motion } from "framer-motion"
+import React, { useEffect, useRef } from "react";
 
-interface Particle {
-  id: number
-  x: number
-  y: number
-  vx: number
-  vy: number
-}
-
-interface MousePosition {
-  x: number
-  y: number
-}
-
-export default function ParticleEffect({ mousePosition }: { mousePosition: MousePosition }) {
-  const [particles, setParticles] = useState<Particle[]>([])
-  const mouseRef = useRef<MousePosition>(mousePosition)
+export default function ParticleEffect() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    mouseRef.current = mousePosition
-  }, [mousePosition])
+    const canvas = canvasRef.current;
+    if (!canvas) return;
 
-  useEffect(() => {
-    // Initialize particles
-    const initialParticles: Particle[] = Array.from({ length: 20 }, (_, i) => ({
-      id: i,
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
-      vx: (Math.random() - 0.5) * 2,
-      vy: (Math.random() - 0.5) * 2,
-    }))
-    setParticles(initialParticles)
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
 
-    const interval = setInterval(() => {
-      setParticles((prevParticles) =>
-        prevParticles.map((particle) => {
-          let { x, y, vx, vy } = particle
+    let animationFrameId: number;
+    let particles: Particle[] = [];
 
-          // Move particle
-          // Small attraction/repulsion based on mouse position for subtle interaction
-          const mx = mouseRef.current?.x ?? 0
-          const my = mouseRef.current?.y ?? 0
-          const ax = (mx - x) * 0.0005
-          const ay = (my - y) * 0.0005
-          vx += ax
-          vy += ay
+    // Configuration
+    const particleCount = 80; // Number of stars
+    const connectionDistance = 100; // Distance to draw lines
+    const mouseDistance = 150; // Distance for mouse interaction
 
-          x += vx
-          y += vy
+    let w = (canvas.width = window.innerWidth);
+    let h = (canvas.height = window.innerHeight);
 
-          // Bounce off walls
-          if (x < 0 || x > window.innerWidth) vx *= -1
-          if (y < 0 || y > window.innerHeight) vy *= -1
+    // Mouse state (internal to avoid re-renders)
+    const mouse = { x: -1000, y: -1000 };
 
-          // Keep in bounds
-          x = Math.max(0, Math.min(window.innerWidth, x))
-          y = Math.max(0, Math.min(window.innerHeight, y))
+    class Particle {
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+      size: number;
 
-          return { ...particle, x, y, vx, vy }
-        }),
-      )
-    }, 50)
+      constructor() {
+        this.x = Math.random() * w;
+        this.y = Math.random() * h;
+        // Slower velocity for a "floating in space" feel
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
+        this.size = Math.random() * 1.5 + 0.5; // Tiny stars
+      }
 
-    return () => clearInterval(interval)
-  }, [])
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        // Bounce off edges
+        if (this.x < 0 || this.x > w) this.vx *= -1;
+        if (this.y < 0 || this.y > h) this.vy *= -1;
+      }
+
+      draw() {
+        if (!ctx) return;
+        ctx.fillStyle = "rgba(150, 150, 255, 0.5)"; // Blueish-white stars
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    const init = () => {
+      particles = [];
+      // Adjust particle count based on screen size
+      const count = window.innerWidth < 768 ? 40 : particleCount;
+      for (let i = 0; i < count; i++) {
+        particles.push(new Particle());
+      }
+    };
+
+    const animate = () => {
+      if (!ctx) return;
+      ctx.clearRect(0, 0, w, h);
+
+      // Loop through all particles
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+        particles[i].draw();
+
+        // Check connections to other particles (Constellations)
+        for (let j = i; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < connectionDistance) {
+            ctx.beginPath();
+            // Opacity based on distance (closer = brighter)
+            const opacity = 1 - distance / connectionDistance;
+            ctx.strokeStyle = `rgba(147, 51, 234, ${opacity * 0.15})`; // Subtle Purple lines
+            ctx.lineWidth = 1;
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+
+        // Check connection to mouse
+        const dx = mouse.x - particles[i].x;
+        const dy = mouse.y - particles[i].y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < mouseDistance) {
+            ctx.beginPath();
+            const opacity = 1 - distance / mouseDistance;
+            ctx.strokeStyle = `rgba(59, 130, 246, ${opacity * 0.4})`; // Brighter Blue connection to mouse
+            ctx.lineWidth = 1;
+            ctx.moveTo(mouse.x, mouse.y);
+            ctx.lineTo(particles[i].x, particles[i].y);
+            ctx.stroke();
+            
+            // Gentle push effect (optional: makes stars run away slightly)
+            // particles[i].vx -= dx * 0.0001;
+            // particles[i].vy -= dy * 0.0001;
+        }
+      }
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    // Event Listeners
+    const handleResize = () => {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+      init();
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      // Get correct coordinates relative to viewport
+      const rect = canvas.getBoundingClientRect();
+      mouse.x = e.clientX - rect.left;
+      mouse.y = e.clientY - rect.top;
+    };
+
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("mousemove", handleMouseMove);
+
+    init();
+    animate();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("mousemove", handleMouseMove);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-10">
-      {particles.map((particle) => (
-        <motion.div
-          key={particle.id}
-          className="absolute w-1 h-1 rounded-full bg-gradient-to-r from-purple-400 to-blue-400"
-          style={{
-            x: particle.x,
-            y: particle.y,
-            opacity: 0.6,
-          }}
-          animate={{
-            scale: [1, 1.5, 1],
-            opacity: [0.3, 0.8, 0.3],
-          }}
-          transition={{
-            duration: 3,
-            repeat: Number.POSITIVE_INFINITY,
-            delay: particle.id * 0.1,
-          }}
-        />
-      ))}
-    </div>
-  )
+    <canvas
+      ref={canvasRef}
+      className="fixed inset-0 -z-0 pointer-events-none"
+      // We don't set width/height here in style, we let the JS handle logical size
+    />
+  );
 }
